@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zyy 的在线作品集</title>
+
+  <!-- 字体与样式 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-primary: #1D4ED8;
+      --color-secondary: #3B82F6;
+      --color-bg: #F3F4F6;
+      --text-dark: #111827;
+      --text-muted: #6B7280;
+    }
+  </style>
+</head>
+<body>
+  <!-- 头部 / Hero -->
+  <header>
+    <h1>zyy 的在线作品集</h1>
+    <p>文史哲背景 × 前沿 AI 应用</p>
+  </header>
+
+  <!-- 导航 -->
+  <nav>
+    <ul>
+      <li><a href="#about">关于我</a></li>
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </nav>
+
+  <!-- 主内容容器 -->
+  <main class="container">
+    <!-- 关于我 -->
+    <section id="about">
+      <h2>关于我</h2>
+      <p>这里简要介绍你的背景、专业、擅长领域，以及“文史哲”与“AI”结合的优势视角。</p>
+    </section>
+
+    <!-- 项目展示 -->
+    <section id="projects">
+      <h2>项目展示</h2>
+      <div class="grid">
+        <!-- 卡片 1 -->
+        <div class="project-card">
+          <h3>基于大语言模型的碎片式虚假新闻检测研究 —— “胖猫事件”</h3>
+          <div class="content">
+            <h4>报告</h4>
+            <object class="pdf-embed" data="report1.pdf" type="application/pdf"></object>
+            <p><a href="report1.pdf" download>下载报告</a></p>
+
+            <h4>附录</h4>
+            <object class="pdf-embed" data="appendix.pdf" type="application/pdf"></object>
+            <p><a href="appendix.pdf" download>下载附录</a></p>
+
+            <h4>演示视频</h4>
+            <iframe
+              src="https://player.bilibili.com/player.html?aid=114443161771962&bvid=BV1SiVnzxEG7"
+              frameborder="0"
+              allowfullscreen
+              style="width:100%;height:360px;">
+            </iframe>
+            <p><a href="https://www.bilibili.com/video/BV1SiVnzxEG7" target="_blank">在 Bilibili 上观看</a></p>
+          </div>
+        </div>
+
+        <!-- 卡片 2 -->
+        <div class="project-card">
+          <h3>官民话语互动新模式——舆情数据挖掘与算法分析</h3>
+          <div class="content">
+            <h4>报告</h4>
+            <object class="pdf-embed" data="report2.pdf" type="application/pdf"></object>
+            <p><a href="report2.pdf" download>下载报告</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact">
+      <h2>联系我</h2>
+      <p>邮箱：2892714045@qq.com</p>
+      <p>GitHub：<a href="https://github.com/bluelee-spring" target="_blank">github.com/bluelee-spring</a></p>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>&copy; 2025 zyy. 保留所有权利。</p>
+  </footer>
+</body>
+</html>
