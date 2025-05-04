@@ -1,26 +1,34 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>zyy 的在线作品集</title>
 
-  <!-- 字体与样式 -->
+  <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- 图标 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- AOS 动画 -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- 主样式 -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- VanillaTilt -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 </head>
 <body>
-  <!-- 头部 / Hero -->
+  <!-- Header -->
   <header>
-    <h1>zyy 的在线作品集</h1>
-    <p>文史哲背景 × 前沿 AI 应用</p>
+    <h1 data-aos="fade-down">zyy 的在线作品集</h1>
+    <p data-aos="fade-down" data-aos-delay="200">文史哲背景 × 前沿 AI 应用</p>
   </header>
 
-  <!-- 导航 -->
+  <!-- Nav -->
   <nav>
     <ul>
       <li><a href="#about">关于我</a></li>
@@ -29,36 +37,35 @@
     </ul>
   </nav>
 
-<script>
-  VanillaTilt.init(document.querySelectorAll(".project-card"), {
-    max: 10,
-    speed: 400,
-    glare: true,
-    "max-glare": 0.2
-  });
-</script>
-
-  <!-- 主内容容器 -->
+  <!-- Main -->
   <main class="container">
-    <!-- 关于我 -->
+    <!-- About -->
     <section id="about">
-      <div class="profile">
-        <img src="avatar.jpg" alt="我的头像">
+      <div class="profile" data-aos="fade-up">
+        <img src="avatar.jpg" alt="我的头像" />
         <div class="bio">
-          <h2 data-aos="fade-down"><i class="fa-solid fa-layer-group"></i> 关于我</h2>
-          <p>文史哲背景 × 前沿 AI 应用。这里简要介绍你的经历与专长。</p>
+          <h2><i class="fa-solid fa-user"></i> 关于我</h2>
+          <p>文史哲背景 × 前沿 AI 应用，擅长跨学科视角下的舆情数据挖掘与算法实践。</p>
+          <p>中国政法大学 汉语言文学（本科在读，2023 级）；平均分 91.6/100，专业排名前 5%；CET-6 610。</p>
+          <h4><i class="fa-solid fa-graduation-cap"></i> 修读课程</h4>
+          <p>文学概论（94）、中国古代文学史（94）、语言学概论（97）、哲学导论（97）、话语分析理论与实践（97）；选修：经济学（95）、Python 编程、高等数学、人工智能导论。</p>
+          <a href="resume.pdf" class="btn" download><i class="fa-solid fa-download"></i> 下载完整简历</a>
         </div>
       </div>
     </section>
 
-    <!-- 项目展示 -->
+    <!-- Projects -->
     <section id="projects">
       <h2 data-aos="fade-down"><i class="fa-solid fa-layer-group"></i> 项目展示</h2>
       <div class="grid">
-        <!-- 卡片 1 -->
-        <div class="project-card" data-aos="fade-up">
-          <h3>基于大语言模型的碎片式虚假新闻检测研究 —— “胖猫事件”</h3>
+        <!-- Card 1 -->
+        <div class="project-card" data-tilt data-aos="fade-up">
+          <h3>基于大语言模型的碎片式虚假新闻检测 —— “胖猫事件”</h3>
           <div class="content">
+            <h4>独立研发 | 2024.08 – 2025.04</h4>
+            <p>作为项目唯一研发者和全流程负责人，独立承担从需求梳理、方案设计到结果汇报的各环节。</p>
+            <p>组织并完成 199 条高质量人工样本标注，引入权威知识库确保检索覆盖；提出“多轮 Prompt 迭代 + 动态 RAG 检索增强”轻量级框架；完成 SparkDesk API 接入，设计三分类判断流程；基于 Streamlit 构建原型，支持在线单条及批量 CSV 预测；成果获推免至“挑战杯·揭幕挂帅”市赛。</p>
+
             <h4>报告</h4>
             <object class="pdf-embed" data="report1.pdf" type="application/pdf"></object>
             <p><a href="report1.pdf" download>下载报告</a></p>
@@ -70,18 +77,20 @@
             <h4>演示视频</h4>
             <iframe
               src="https://player.bilibili.com/player.html?aid=114443161771962&bvid=BV1SiVnzxEG7"
-              frameborder="0"
-              allowfullscreen
-              style="width:100%;height:360px;">
+              frameborder="0" allowfullscreen
+              style="width:100%;height:300px;">
             </iframe>
             <p><a href="https://www.bilibili.com/video/BV1SiVnzxEG7" target="_blank">在 Bilibili 上观看</a></p>
           </div>
         </div>
 
-        <!-- 卡片 2 -->
-        <div class="project-card" data-aos="fade-up">
-          <h3>官民话语互动新模式——舆情数据挖掘与算法分析</h3>
+        <!-- Card 2 -->
+        <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="100">
+          <h3>官民话语互动新模式 —— 数据挖掘与算法分析</h3>
           <div class="content">
+            <h4>项目负责人 | 2024.05 – 2025.03</h4>
+            <p>带领 4 人小组统筹话语分析、数据挖掘与算法应用，聚焦话语分析切入点，甄选并实施 LDA、词向量、BERT 模型，对 9,246 条评论进行情感与主题对比分析，成果获校“法创杯”一等奖。</p>
+
             <h4>报告</h4>
             <object class="pdf-embed" data="report2.pdf" type="application/pdf"></object>
             <p><a href="report2.pdf" download>下载报告</a></p>
@@ -90,22 +99,24 @@
       </div>
     </section>
 
-    <!-- 联系方式 -->
+    <!-- Contact -->
     <section id="contact">
-      <h2 data-aos="fade-down"><i class="fa-solid fa-layer-group"></i> 联系我</h2>
-      <p>邮箱：2892714045@qq.com</p>
-      <p>GitHub：<a href="https://github.com/bluelee-spring" target="_blank">github.com/bluelee-spring</a></p>
+      <h2 data-aos="fade-down"><i class="fa-solid fa-envelope"></i> 联系我</h2>
+      <p data-aos="fade-up">邮箱：<a href="mailto:2892714045@qq.com">2892714045@qq.com</a></p>
+      <p data-aos="fade-up" data-aos-delay="100">GitHub：<a href="https://github.com/bluelee-spring" target="_blank">bluelee-spring</a></p>
     </section>
   </main>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 800 });
-</script>
-
-  <!-- 页脚 -->
-  <footer>
+  <!-- Footer -->
+  <footer data-aos="fade-up">
     <p>&copy; 2025 zyy. 保留所有权利。</p>
   </footer>
+
+  <!-- AOS & Tilt 初始化 -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+    VanillaTilt.init(document.querySelectorAll(".project-card"));
+  </script>
 </body>
 </html>
