@@ -1,25 +1,16 @@
-/* styles.css 最顶部，紧跟在任何 @import 或 reset 之后 */
+/* styles.css */
 
+/* ———— 全局变量 & 重置 ———— */
 :root {
-  --color-primary: #60A5FA;    /* 浅天蓝 */
-  --color-secondary: #A5B4FC;  /* 浅紫 */
-  --color-bg: #F3F7FE;         /* 更亮背景 */
-  --text-dark: #1F2937;
-  --text-muted: #4B5563;
+  --color-primary:   #60A5FA;
+  --color-secondary: #A5B4FC;
+  --color-accent:    #2563EB;
+  --color-bg:        #F3F7FE;
+  --text-dark:       #1F2937;
+  --text-muted:      #4B5563;
 }
-
-/* 全局重置 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* 平滑滚动 */
-html {
-  scroll-behavior: smooth;
-}
-
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', sans-serif;
   background: var(--color-bg);
@@ -27,166 +18,145 @@ body {
   line-height: 1.6;
 }
 
-/* 统一容器宽度 */
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
+/* ———— 容器 & 栅格 ———— */
+.container { max-width:960px; margin:0 auto; padding:2rem 1rem; }
+.grid { display:flex; flex-direction:column; gap:2rem; margin-top:1rem; }
 
-/* 增强版 Header：单次图案 + 渐变叠加 */
+/* ———— Header ———— */
 header {
-  position: relative;
-  text-align: center;
-  padding: 5rem 1rem;
-  color: #fff;
-
-  background-image:
-    linear-gradient(135deg, var(--color-primary), var(--color-secondary)),
-    url('header-pattern.png');
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
-  background-position: center center;
-  background-blend-mode: overlay;
-  border-bottom: 5px solid var(--color-secondary);
+  background: url('header-pattern.png') center/cover no-repeat;
+  padding:5rem 1rem; text-align:center; color:#fff;
+  border-bottom:5px solid var(--color-secondary);
 }
-
 header h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.8rem;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-family:'Poppins',sans-serif; font-size:2.8rem; margin-bottom:.5rem;
+  text-shadow:0 2px 4px rgba(0,0,0,0.2);
 }
+header p { font-size:1.2rem; }
 
-header p {
-  font-size: 1.2rem;
+/* 首屏淡入 */
+@keyframes fadeDown { to {opacity:1; transform:translateY(0);} }
+header h1, header p {
+  opacity:0; transform:translateY(-10px);
+  animation: fadeDown 1s forwards;
 }
+header h1 { animation-delay:.3s; }
+header p  { animation-delay:.6s; }
 
-
-
-
-/* 导航 */
+/* ———— Nav ———— */
 nav {
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.08);
+  position:sticky; top:0; z-index:10;
 }
-nav ul {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
+nav ul { display:flex; justify-content:center; gap:2rem; }
 nav a {
-  display: block;
-  padding: 1rem;
-  color: var(--text-dark);
-  font-weight: 600;
-  text-decoration: none;
+  display:block; padding:1rem;
+  color:var(--text-dark); font-weight:600; text-decoration:none;
+  position:relative;
 }
-nav a:hover {
-  color: var(--color-secondary);
+nav a::after {
+  content:""; position:absolute; left:50%; bottom:8px;
+  width:0; height:2px; background:var(--color-accent);
+  transition:width .3s, left .3s;
 }
+nav a:hover::after { width:100%; left:0; }
+nav a:hover { color:var(--color-accent); }
+
+/* ———— About ———— */
 .profile {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  display:flex; flex-wrap:wrap; align-items:center;
+  gap:1.5rem; margin-bottom:2rem;
 }
 .profile img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;       /* 等比裁切，中心对齐 */
-  object-position: center; /* 保证重点在中间 */
-  border-radius: 50%;
-  border: 3px solid var(--color-secondary);
-  transition: transform 0.3s ease;
+  width:120px; height:120px;
+  object-fit:cover; object-position:center;
+  border-radius:50%; border:3px solid var(--color-secondary);
+  transition:transform .3s ease;
 }
+.profile img:hover { transform:scale(1.05); }
 
-.profile img:hover {
-  transform: scale(1.05);
-}
 .bio h2 {
-  margin-bottom: 0.5rem;
+  font-size:1.8rem; font-weight:700;
+  border-bottom:3px solid var(--color-accent);
+  padding-bottom:.5rem; margin-bottom:1rem;
+  letter-spacing:.5px;
+}
+.bio p {
+  font-size:1rem; line-height:1.8; letter-spacing:.5px;
+  margin:0 auto 1.5rem; max-width:600px;
+  text-align:justify; text-justify:inter-ideograph;
+}
+.bio h4 {
+  font-size:1.2rem; font-weight:600; color:var(--color-secondary);
+  margin:2rem 0 .5rem; letter-spacing:.5px;
+}
+.bio .btn { margin-top:.5rem; }
+
+/* ———— 按钮 ———— */
+.btn {
+  display:inline-block; padding:.6rem 1.2rem;
+  border:2px solid var(--color-primary);
+  border-radius:.4rem; color:var(--color-primary);
+  font-weight:600; text-decoration:none;
+  transition:background .3s,color .3s;
+}
+.btn:hover { background:var(--color-accent); color:#fff; }
+
+/* ———— Section 标题 ———— */
+section h2 {
+  font-size:2rem; font-weight:700; margin-bottom:1rem;
+  position:relative; padding-left:.75rem;
+}
+section h2::before {
+  content:""; position:absolute; left:0; top:50%;
+  transform:translateY(-50%); width:4px; height:60%;
+  background:var(--color-accent); border-radius:2px;
 }
 
-
-/* 项目卡片 —— Flex Column */
-#projects .grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 1rem;
-}
+/* ———— 项目卡片 ———— */
 .project-card {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 10px solid transparent;
-  border-image: url(border.png) 30 round;
+  width:100%; max-width:800px; margin:0 auto 3rem;
+  background:#fff; border-radius:.5rem;
+  box-shadow:0 4px 8px rgba(0,0,0,0.05);
+  overflow:hidden; display:flex; flex-direction:column;
+  transition:transform .3s ease,box-shadow .3s ease;
 }
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transform:translateY(-4px); box-shadow:0 8px 16px rgba(0,0,0,0.1);
 }
 .project-card h3 {
-  margin: 0;
-  padding: 1rem;
-  background: var(--color-secondary);
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.25rem;
+  margin:0; padding:1rem; background:var(--color-secondary);
+  color:#fff; font-family:'Poppins',sans-serif; font-size:1.25rem;
+  box-shadow:0 2px 4px rgba(0,0,0,0.08);
 }
 .content {
-  padding: 1rem;
-  flex: 1;
+  padding:1rem; flex:1;
 }
 .content h4 {
-  margin: 1rem 0 0.5rem;
-  color: var(--text-muted);
-  font-size: 1rem;
-}
-.pdf-embed {
-  width: 100%;
-  height: 250px;
-  border: 1px solid #ccc;
-  margin-bottom: 0.5rem;
+  font-size:1.1rem; font-weight:600; color:var(--text-muted);
+  margin:1.5rem 0 .75rem; letter-spacing:.3px;
 }
 .content p {
-  margin-bottom: 0.5rem;
+  margin-bottom:.75rem; text-indent:1.5em; line-height:1.7;
 }
-.content a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 600;
+.pdf-embed {
+  width:100%; height:250px; border:1px solid #ccc; margin-bottom:.5rem;
 }
 
-/* 联系 & Footer */
+/* ———— Contact & Footer ———— */
+#contact p a {
+  color:var(--color-accent); text-decoration:none;
+}
 footer {
-  background: #f4f4f4;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
+  background:#f4f4f4; text-align:center; padding:1rem;
+  margin-top:2rem; box-shadow:0 -2px 4px rgba(0,0,0,0.08);
 }
 
-/* 响应式 */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 2rem;
-  }
-  .project-card h3 {
-    font-size: 1.1rem;
-  }
-  .pdf-embed {
-    height: 200px;
-  }
+/* ———— AOS & Tilt 初始化由 HTML 下方 Script 加载 ———— */
+
+/* ———— 响应式 ———— */
+@media (max-width:600px) {
+  header h1 { font-size:2rem; }
+  .project-card h3 { font-size:1.1rem; }
+  .pdf-embed { height:200px; }
 }
