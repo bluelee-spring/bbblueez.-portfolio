@@ -42,7 +42,7 @@
     <!-- About -->
     <section id="about">
       <div class="profile" data-aos="fade-up">
-        <img src="avatar.jpg" alt="我的头像" />
+        <img src="avatar.jpg" alt="我的头像" loading="lazy" />
         <div class="bio">
           <h2><i class="fa-solid fa-user"></i> 关于我</h2>
           <p>文史哲背景 × 前沿 AI 应用，擅长跨学科视角下的舆情数据挖掘与算法实践。</p>
@@ -66,13 +66,23 @@
             <p>作为项目唯一研发者和全流程负责人，独立承担从需求梳理、方案设计到结果汇报的各环节。</p>
             <p>组织并完成 199 条高质量人工样本标注，引入权威知识库确保检索覆盖；提出“多轮 Prompt 迭代 + 动态 RAG 检索增强”轻量级框架；完成 SparkDesk API 接入，设计三分类判断流程；基于 Streamlit 构建原型，支持在线单条及批量 CSV 预测；成果获推免至“挑战杯·揭幕挂帅”市赛。</p>
 
-            <h4>报告</h4>
-            <object class="pdf-embed" data="report1.pdf" type="application/pdf"></object>
-            <p><a href="report1.pdf" download>下载报告</a></p>
-
-            <h4>附录</h4>
-            <object class="pdf-embed" data="appendix.pdf" type="application/pdf"></object>
-            <p><a href="appendix.pdf" download>下载附录</a></p>
+          <h4>相关文档</h4>
+<div class="document-grid">
+    <a href="report1.pdf" class="doc-preview" target="_blank">
+        <img src="report1-cover.png" alt="报告1封面" loading="lazy">
+        <div class="doc-overlay">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>查看报告</span>
+        </div>
+    </a>
+    <a href="appendix.pdf" class="doc-preview" target="_blank">
+        <img src="appendix-cover.png" alt="附录封面" loading="lazy"> <!-- 假设你也为附录创建了封面 -->
+        <div class="doc-overlay">
+            <i class="fa-solid fa-file-alt"></i>
+            <span>查看附录</span>
+        </div>
+    </a>
+</div>
 
             <h4>演示视频</h4>
             <iframe
@@ -91,10 +101,17 @@
             <h4>项目负责人 | 2024.05 – 2025.03</h4>
             <p>带领 4 人小组统筹话语分析、数据挖掘与算法应用，聚焦话语分析切入点，甄选并实施 LDA、词向量、BERT 模型，对 9,246 条评论进行情感与主题对比分析，成果获校“法创杯”一等奖。</p>
 
-            <h4>报告</h4>
-            <object class="pdf-embed" data="report2.pdf" type="application/pdf"></object>
-            <p><a href="report2.pdf" download>下载报告</a></p>
-          </div>
+            <h4>相关文档</h4>
+            <div class="document-grid">
+                <a href="report2.pdf" class="doc-preview" target="_blank">
+                    <img src="report2-cover.png" alt="报告2封面" loading="lazy">
+                    <div class="doc-overlay">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>查看报告</span>
+                  </div>
+                 </a>
+             </div>
+        </div>
         </div>
       </div>
     </section>
