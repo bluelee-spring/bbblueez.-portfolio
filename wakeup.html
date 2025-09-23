@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Wake Up Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: #16213e;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        canvas {
+            display: block;
+            background-color: #0f3460;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        
+        .ui {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            color: #e94560;
+            font-size: 18px;
+            z-index: 10;
+        }
+        
+        .ui div {
+            margin: 5px 0;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 10;
+        }
+        
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+        
+        button:hover {
+            background-color: #d63447;
+            transform: scale(1.05);
+        }
+        
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+            z-index: 20;
+            display: none;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            top: 150px;
+            left: 350px;
+            background-color: white;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            display: none;
+            z-index: 15;
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="ui">
+            <div>Score: <span id="score">0</span></div>
+            <div>Mistakes: <span id="mistakes">0</span>/5</div>
+            <div>Correct: <span id="correct">0</span>/16</div>
+        </div>
+        
+        <div class="controls">
+            <button id="easyBtn">Easy</button>
+            <button id="mediumBtn">Medium</button>
+            <button id="hardBtn">Hard</button>
+            <button id="startBtn" disabled>Start Game</button>
+        </div>
+        
+        <div id="message" class="message"></div>
+        <div id="speechBubble" class="speech-bubble">Thank you for waking me up!</div>
+    </div>
+
+    <script>
+        // Game variables
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const mistakesElement = document.getElementById('mistakes');
+        const correctElement = document.getElementById('correct');
+        const messageElement = document.getElementById('message');
+        const speechBubbleElement = document.getElementById('speechBubble');
+        
+        const easyBtn = document.getElementById('easyBtn');
+        const mediumBtn = document.getElementById('mediumBtn');
+        const hardBtn = document.getElementById('hardBtn');
+        const startBtn = document.getElementById('startBtn');
+        
+        let gameState = 'menu'; // menu, playing, success, failure
+        let difficulty = 'easy';
+        let score = 0;
+        let mistakes = 0;
+        let correctHits = 0;
+        let rhythmPoints = [];
+        let lastRhythmTime = 0;
+        let rhythmInterval = 1500; // milliseconds
+        let pointLifetime = 1000; // milliseconds
+        let gameStartTime = 0;
+        let bedBroken = false;
+        let characterAwake = false;
+        
+        // Difficulty settings
+        const difficulties = {
+            easy: {
+                interval: 1500,
+                points: 1,
+                pointLifetime: 1000
+            },
+            medium: {
+                interval: 1000,
+                points: 2,
+                pointLifetime: 800
+            },
+            hard: {
+                interval: 700,
+                points: 3,
+                pointLifetime: 600
+            }
+        };
+        
+        // Character position
+        const character = {
+            x: 350,
+            y: 300,
+            width: 100,
+            height: 60
+        };
+        
+        // Bed position
+        const bed = {
+            x: 300,
+            y: 350,
+            width: 200,
+            height: 100
+        };
+        
+        // Initialize the game
+        function init() {
+            drawMenu();
+            
+            // Event listeners
+            easyBtn.addEventListener('click', () => setDifficulty('easy'));
+            mediumBtn.addEventListener('click', () => setDifficulty('medium'));
+            hardBtn.addEventListener('click', () => setDifficulty('hard'));
+            startBtn.addEventListener('click', startGame);
+            canvas.addEventListener('click', handleCanvasClick);
+        }
+        
+        function setDifficulty(level) {
+            difficulty = level;
+            rhythmInterval = difficulties[level].interval;
+            pointLifetime = difficulties[level].pointLifetime;
+            
+            // Update button styles
+            document.querySelectorAll('.controls button').forEach(btn => {
+                btn.style.backgroundColor = '#e94560';
+            });
+            
+            if (level === 'easy') easyBtn.style.backgroundColor = '#d63447';
+            if (level === 'medium') mediumBtn.style.backgroundColor = '#d63447';
+            if (level === 'hard') hardBtn.style.backgroundColor = '#d63447';
+            
+            startBtn.disabled = false;
+        }
+        
+        function startGame() {
+            gameState = 'playing';
+            score = 0;
+            mistakes = 0;
+            correctHits = 0;
+            rhythmPoints = [];
+            lastRhythmTime = 0;
+            gameStartTime = Date.now();
+            bedBroken = false;
+            characterAwake = false;
+            
+            updateUI();
+            messageElement.style.display = 'none';
+            speechBubbleElement.style.display = 'none';
+            
+            // Disable buttons during gameplay
+            easyBtn.disabled = true;
+            mediumBtn.disabled = true;
+            hardBtn.disabled = true;
+            startBtn.disabled = true;
+            
+            gameLoop();
+        }
+        
+        function gameLoop() {
+            if (gameState !== 'playing') return;
+            
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - gameStartTime;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw room
+            drawRoom();
+            
+            // Draw bed
+            drawBed();
+            
+            // Draw character
+            drawCharacter();
+            
+            // Generate rhythm points
+            if (currentTime - lastRhythmTime > rhythmInterval) {
+                generateRhythmPoint();
+                lastRhythmTime = currentTime;
+            }
+            
+            // Update and draw rhythm points
+            updateRhythmPoints(currentTime);
+            
+            // Check win/lose conditions
+            if (correctHits >= 16) {
+                gameState = 'success';
+                characterAwake = true;
+                speechBubbleElement.style.display = 'block';
+                setTimeout(() => {
+                    messageElement.textContent = 'You woke me up! Thanks!';
+                    messageElement.style.display = 'block';
+                    setTimeout(resetGame, 3000);
+                }, 2000);
+            } else if (mistakes >= 5) {
+                gameState = 'failure';
+                bedBroken = true;
+                setTimeout(() => {
+                    messageElement.textContent = 'Failed to wake up! Try again.';
+                    messageElement.style.display = 'block';
+                    setTimeout(resetGame, 3000);
+                }, 1000);
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        function drawMenu() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw room
+            drawRoom();
+            
+            // Draw bed
+            drawBed();
+            
+            // Draw character sleeping
+            drawCharacter();
+            
+            // Draw title
+            ctx.fillStyle = '#e94560';
+            ctx.font = 'bold 36px Courier New';
+            ctx.textAlign = 'center';
+            ctx.fillText('Rhythm Wake Up', canvas.width / 2, 100);
+            
+            // Draw instructions
+            ctx.fillStyle = 'white';
+            ctx.font = '18px Courier New';
+            ctx.fillText('Click on the rhythm points to wake up the character!', canvas.width / 2, 150);
+            ctx.fillText('Choose difficulty and press Start Game', canvas.width / 2, 180);
+        }
+        
+        function drawRoom() {
+            // Floor
+            ctx.fillStyle = '#8b5a3c';
+            ctx.fillRect(0, 500, canvas.width, 100);
+            
+            // Walls
+            ctx.fillStyle = '#4a69bd';
+            ctx.fillRect(0, 0, canvas.width, 500);
+            
+            // Window
+            ctx.fillStyle = '#82ccdd';
+            ctx.fillRect(600, 100, 150, 150);
+            
+            // Window frame
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(600, 100, 150, 150);
+            
+            // Window cross
+            ctx.beginPath();
+            ctx.moveTo(675, 100);
+            ctx.lineTo(675, 250);
+            ctx.moveTo(600, 175);
+            ctx.lineTo(750, 175);
+            ctx.stroke();
+            
+            // Carpet
+            ctx.fillStyle = '#c0392b';
+            ctx.fillRect(250, 450, 300, 50);
+            
+            // Carpet pattern
+            ctx.fillStyle = '#e74c3c';
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 2; j++) {
+                    ctx.fillRect(270 + i * 50, 460 + j * 20, 20, 10);
+                }
+            }
+        }
+        
+        function drawBed() {
+            if (bedBroken) {
+                // Draw broken bed
+                ctx.fillStyle = '#8b4513';
+                
+                // Left part of bed
+                ctx.fillRect(bed.x, bed.y, bed.width / 2 - 10, bed.height);
+                
+                // Right part of bed
+                ctx.fillRect(bed.x + bed.width / 2 + 10, bed.y, bed.width / 2 - 10, bed.height);
+                
+                // Pillows
+                ctx.fillStyle = '#f5f5f5';
+                ctx.fillRect(bed.x + 20, bed.y - 20, 60, 30);
+                ctx.fillRect(bed.x + bed.width / 2 + 30, bed.y - 20, 60, 30);
+                
+                // Character falling
+                ctx.fillStyle = '#f1c40f';
+                ctx.fillRect(character.x, character.y + 50, character.width, character.height);
+                
+                // Character head
+                ctx.fillStyle = '#f39c12';
+                ctx.fillRect(character.x + 30, character.y + 20, 40, 40);
+                
+                // Eyes (X)
+                ctx.fillStyle = '#333';
+                ctx.font = '20px Courier New';
+                ctx.fillText('X', character.x + 40, character.y + 45);
+                ctx.fillText('X', character.x + 55, character.y + 45);
+            } else {
+                // Draw normal bed
+                ctx.fillStyle = '#8b4513';
+                ctx.fillRect(bed.x, bed.y, bed.width, bed.height);
+                
+                // Pillow
+                ctx.fillStyle = '#f5f5f5';
+                ctx.fillRect(bed.x + 50, bed.y - 20, 100, 30);
+                
+                // Blanket
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(bed.x + 20, bed.y + 20, bed.width - 40, bed.height - 40);
+                
+                // Blanket pattern
+                ctx.fillStyle = '#2980b9';
+                for (let i = 0; i < 4; i++) {
+                    ctx.fillRect(bed.x + 30 + i * 40, bed.y + 30, 20, 20);
+                }
+            }
+        }
+        
+        function drawCharacter() {
+            if (characterAwake) {
+                // Draw character standing
+                ctx.fillStyle = '#f1c40f';
+                ctx.fillRect(character.x + 50, character.y - 50, character.width, character.height + 50);
+                
+                // Head
+                ctx.fillStyle = '#f39c12';
+                ctx.fillRect(character.x + 60, character.y - 90, 80, 80);
+                
+                // Eyes
+                ctx.fillStyle = '#333';
+                ctx.fillRect(character.x + 80, character.y - 70, 10, 10);
+                ctx.fillRect(character.x + 110, character.y - 70, 10, 10);
+                
+                // Smile
+                ctx.beginPath();
+                ctx.arc(character.x + 100, character.y - 50, 20, 0, Math.PI);
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Arms
+                ctx.fillStyle = '#f1c40f';
+                ctx.fillRect(character.x + 20, character.y - 30, 30, 10);
+                ctx.fillRect(character.x + 150, character.y - 30, 30, 10);
+                
+                // Legs
+                ctx.fillRect(character.x + 60, character.y + 10, 30, 50);
+                ctx.fillRect(character.x + 110, character.y + 10, 30, 50);
+            } else if (!bedBroken) {
+                // Draw character sleeping
+                ctx.fillStyle = '#f1c40f';
+                ctx.fillRect(character.x, character.y, character.width, character.height);
+                
+                // Head
+                ctx.fillStyle = '#f39c12';
+                ctx.fillRect(character.x + 30, character.y - 30, 40, 40);
+                
+                // Eyes (closed)
+                ctx.fillStyle = '#333';
+                ctx.fillRect(character.x + 40, character.y - 15, 20, 3);
+                ctx.fillRect(character.x + 40, character.y - 5, 20, 3);
+                
+                // Zzz
+                ctx.fillStyle = '#333';
+                ctx.font = '20px Courier New';
+                ctx.fillText('Z', character.x + 80, character.y - 40);
+                ctx.fillText('Z', character.x + 100, character.y - 50);
+                ctx.fillText('Z', character.x + 120, character.y - 60);
+            }
+        }
+        
+        function generateRhythmPoint() {
+            const point = {
+                x: Math.random() * (canvas.width - 100) + 50,
+                y: Math.random() * (canvas.height - 200) + 50,
+                radius: 20,
+                active: true,
+                createdAt: Date.now(),
+                color: `hsl(${Math.random() * 360}, 80%, 60%)`
+            };
+            
+            rhythmPoints.push(point);
+        }
+        
+        function updateRhythmPoints(currentTime) {
+            // Draw rhythm points
+            rhythmPoints.forEach(point => {
+                const age = currentTime - point.createdAt;
+                const alpha = 1 - (age / pointLifetime);
+                
+                if (alpha > 0) {
+                    ctx.globalAlpha = alpha;
+                    
+                    // Pulsing effect
+                    const pulse = Math.sin(age / 100) * 0.2 + 0.8;
+                    const radius = point.radius * pulse;
+                    
+                    ctx.fillStyle = point.color;
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Inner circle
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, radius * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.globalAlpha = 1;
+                } else {
+                    point.active = false;
+                }
+            });
+            
+            // Remove inactive points
+            rhythmPoints = rhythmPoints.filter(point => point.active);
+        }
+        
+        function handleCanvasClick(event) {
+            if (gameState !== 'playing') return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            let hit = false;
+            
+            // Check if any rhythm point was clicked
+            for (let i = rhythmPoints.length - 1; i >= 0; i--) {
+                const point = rhythmPoints[i];
+                const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
+                
+                if (distance <= point.radius) {
+                    // Hit!
+                    rhythmPoints.splice(i, 1);
+                    score += difficulties[difficulty].points;
+                    correctHits++;
+                    hit = true;
+                    break;
+                }
+            }
+            
+            if (!hit) {
+                mistakes++;
+            }
+            
+            updateUI();
+        }
+        
+        function updateUI() {
+            scoreElement.textContent = score;
+            mistakesElement.textContent = mistakes;
+            correctElement.textContent = correctHits;
+        }
+        
+        function resetGame() {
+            gameState = 'menu';
+            messageElement.style.display = 'none';
+            speechBubbleElement.style.display = 'none';
+            
+            // Re-enable buttons
+            easyBtn.disabled = false;
+            mediumBtn.disabled = false;
+            hardBtn.disabled = false;
+            
+            // Reset button styles
+            document.querySelectorAll('.controls button').forEach(btn => {
+                btn.style.backgroundColor = '#e94560';
+            });
+            
+            // Set current difficulty button as active
+            if (difficulty === 'easy') easyBtn.style.backgroundColor = '#d63447';
+            if (difficulty === 'medium') mediumBtn.style.backgroundColor = '#d63447';
+            if (difficulty === 'hard') hardBtn.style.backgroundColor = '#d63447';
+            
+            startBtn.disabled = false;
+            
+            drawMenu();
+        }
+        
+        // Start the game
+        init();
+    </script>
+</body>
+</html>

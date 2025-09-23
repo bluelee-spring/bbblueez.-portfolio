@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -17,9 +16,6 @@
 
   <!-- 主样式 -->
   <link rel="stylesheet" href="styles.css">
-
-  <!-- VanillaTilt -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -41,15 +37,16 @@
   <main class="container">
     <!-- About -->
     <section id="about">
-      <div class="profile" data-aos="fade-up">
-        <img src="avatar.jpg" alt="我的头像" loading="lazy" />
-        <div class="bio">
+      <div class="profile-container" data-aos="fade-up">
+        <div class="profile-image">
+          <img src="avatar.jpg" alt="我的头像" loading="lazy" />
+        </div>
+        <div class="profile-content">
           <h2><i class="fa-solid fa-user"></i> 关于我</h2>
           <p>文史哲背景 × 前沿 AI 应用，擅长跨学科视角下的舆情数据挖掘与算法实践。</p>
           <p>中国政法大学 汉语言文学（本科在读，2023 级）；平均分 91.6/100，专业排名前 5%；CET-6 610。</p>
           <h4><i class="fa-solid fa-graduation-cap"></i> 修读课程</h4>
           <p>文学概论（94）、中国古代文学史（94）、语言学概论（97）、哲学导论（97）、话语分析理论与实践（97）；选修：经济学（95）、Python 编程、高等数学、人工智能导论。</p>
-          <a href="resume.pdf" class="btn" download><i class="fa-solid fa-download"></i> 下载完整简历</a>
         </div>
       </div>
     </section>
@@ -57,63 +54,68 @@
     <!-- Projects -->
     <section id="projects">
       <h2 data-aos="fade-down"><i class="fa-solid fa-layer-group"></i> 项目展示</h2>
-      <div class="grid">
-        <!-- Card 1 -->
-        <div class="project-card" data-tilt data-aos="fade-up">
-          <h3>基于大语言模型的碎片式虚假新闻检测 —— “胖猫事件”</h3>
-          <div class="content">
-            <h4>独立研发 | 2024.08 – 2025.04</h4>
-            <p>作为项目唯一研发者和全流程负责人，独立承担从需求梳理、方案设计到结果汇报的各环节。</p>
-            <p>组织并完成 199 条高质量人工样本标注，引入权威知识库确保检索覆盖；提出“多轮 Prompt 迭代 + 动态 RAG 检索增强”轻量级框架；完成 SparkDesk API 接入，设计三分类判断流程；基于 Streamlit 构建原型，支持在线单条及批量 CSV 预测；成果获推免至“挑战杯·揭幕挂帅”市赛。</p>
 
-          <h4>相关文档</h4>
-<div class="document-grid">
-    <a href="report1.pdf" class="doc-preview" target="_blank">
-        <img src="report1-cover.png" alt="报告1封面" loading="lazy">
-        <div class="doc-overlay">
-            <i class="fa-solid fa-file-pdf"></i>
-            <span>查看报告</span>
-        </div>
-    </a>
-    <a href="appendix.pdf" class="doc-preview" target="_blank">
-        <img src="appendix-cover.png" alt="附录封面" loading="lazy"> <!-- 假设你也为附录创建了封面 -->
-        <div class="doc-overlay">
-            <i class="fa-solid fa-file-alt"></i>
-            <span>查看附录</span>
-        </div>
-    </a>
-</div>
-
-            <h4>演示视频</h4>
-            <iframe
-              src="https://player.bilibili.com/player.html?aid=114443161771962&bvid=BV1SiVnzxEG7"
-              frameborder="0" allowfullscreen
-              style="width:100%;height:300px;">
-            </iframe>
-            <p><a href="https://www.bilibili.com/video/BV1SiVnzxEG7" target="_blank">在 Bilibili 上观看</a></p>
+      <!-- 项目概览 -->
+      <div class="projects-overview" data-aos="fade-up">
+        <!-- 项目卡片 1 -->
+        <div class="project-preview" onclick="showProjectDetail(1)">
+          <div class="preview-image">
+            <img src="card1.png" alt="项目1缩略图" loading="lazy">
+          </div>
+          <div class="preview-content">
+            <h3>大语言模型的碎片式虚假新闻检测</h3>
+            <p>基于"胖猫事件"的独立研发项目</p>
+          </div>
+          <div class="preview-footer">
+            <span>查看详情 <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="project-card" data-tilt data-aos="fade-up" data-aos-delay="100">
-          <h3>官民话语互动新模式 —— 数据挖掘与算法分析</h3>
-          <div class="content">
-            <h4>项目负责人 | 2024.05 – 2025.03</h4>
-            <p>带领 4 人小组统筹话语分析、数据挖掘与算法应用，聚焦话语分析切入点，甄选并实施 LDA、词向量、BERT 模型，对 9,246 条评论进行情感与主题对比分析，成果获校“法创杯”一等奖。</p>
-
-            <h4>相关文档</h4>
-            <div class="document-grid">
-                <a href="report2.pdf" class="doc-preview" target="_blank">
-                    <img src="report2-cover.png" alt="报告2封面" loading="lazy">
-                    <div class="doc-overlay">
-                        <i class="fa-solid fa-file-pdf"></i>
-                        <span>查看报告</span>
-                  </div>
-                 </a>
-             </div>
+        <!-- 项目卡片 2 -->
+        <div class="project-preview" onclick="showProjectDetail(2)">
+          <div class="preview-image">
+            <img src="card2.png" alt="项目2缩略图" loading="lazy">
+          </div>
+          <div class="preview-content">
+            <h3>官民话语互动新模式</h3>
+            <p>数据挖掘与算法分析研究</p>
+          </div>
+          <div class="preview-footer">
+            <span>查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
         </div>
+
+        <!-- 项目卡片 3 -->
+        <div class="project-preview" onclick="showProjectDetail(3)">
+          <div class="preview-image">
+            <img src="card3.png" alt="项目3缩略图" loading="lazy">
+          </div>
+          <div class="preview-content">
+            <h3>智谱AI公司产品实习</h3>
+            <p>参与智谱GLM-4.5模型训练</p>
+          </div>
+          <div class="preview-footer">
+            <span>查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <!-- 项目卡片 4 -->
+        <div class="project-preview" onclick="showProjectDetail(4)">
+          <div class="preview-image">
+            <img src="card4%20(5).png" alt="项目4缩略图" loading="lazy">
+          </div>
+          <div class="preview-content">
+            <h3>学习记录更新</h3>
+            <p>数学建模国赛与个人学习记录</p>
+          </div>
+          <div class="preview-footer">
+            <span>查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
         </div>
       </div>
+
+      <!-- 项目详情容器 -->
+      <div id="project-details-container"></div>
     </section>
 
     <!-- Contact -->
@@ -129,11 +131,157 @@
     <p>&copy; 2025 zyy. 保留所有权利。</p>
   </footer>
 
-  <!-- AOS & Tilt 初始化 -->
+  <!-- AOS 初始化 -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 800, once: true });
-    VanillaTilt.init(document.querySelectorAll(".project-card"));
+
+    // 项目详情数据
+    const projectDetails = {
+      1: {
+        title: "基于大语言模型的碎片式虚假新闻检测 —— '胖猫事件'",
+        content: `
+          <h4>独立研发 | 2024.08 – 2025.04</h4>
+          <p>作为项目唯一研发者和全流程负责人，独立承担从需求梳理、方案设计到结果汇报的各环节。</p>
+          <p>组织并完成 199 条高质量人工样本标注，引入权威知识库确保检索覆盖；提出"多轮 Prompt 迭代 + 动态 RAG 检索增强"轻量级框架；完成 SparkDesk API 接入，设计三分类判断流程；基于 Streamlit 构建原型，支持在线单条及批量 CSV 预测；成果获推免至"挑战杯·揭幕挂帅"市赛。</p>
+
+          <h4>相关文档</h4>
+          <div class="document-grid">
+            <a href="report1.pdf" class="doc-preview" target="_blank">
+              <img src="report1-cover%20(1).jpeg" alt="报告1封面" loading="lazy">
+              <div class="doc-overlay">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>查看报告</span>
+              </div>
+            </a>
+            <a href="appendix.pdf" class="doc-preview" target="_blank">
+              <img src="appendix-cover.png" alt="附录封面" loading="lazy">
+              <div class="doc-overlay">
+                <i class="fa-solid fa-file-alt"></i>
+                <span>查看附录</span>
+              </div>
+            </a>
+          </div>
+
+          <h4>演示视频</h4>
+          <iframe src="https://player.bilibili.com/player.html?aid=114443161771962&bvid=BV1SiVnzxEG7" frameborder="0" allowfullscreen style="width:100%;height:300px;"></iframe>
+          <p><a href="https://www.bilibili.com/video/BV1SiVnzxEG7" target="_blank">在 Bilibili 上观看</a></p>
+        `
+      },
+      2: {
+        title: "官民话语互动新模式 —— 数据挖掘与算法分析",
+        content: `
+          <h4>项目负责人 | 2024.05 – 2025.03</h4>
+          <p>带领 4 人小组统筹话语分析、数据挖掘与算法应用，聚焦话语分析切入点，甄选并实施 LDA、词向量、BERT 模型，对 9,246 条评论进行情感与主题对比分析，成果获校"法创杯"一等奖。</p>
+
+          <h4>相关文档</h4>
+          <div class="document-grid">
+            <a href="report2.pdf" class="doc-preview" target="_blank">
+              <img src="report2-cover.png" alt="报告2封面" loading="lazy">
+              <div class="doc-overlay">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>查看报告</span>
+              </div>
+            </a>
+          </div>
+        `
+      },
+      3: {
+        title: "实习实践",
+        content: `
+          <h4>实习经历 | 2024.06 – 2024.08</h4>
+          <p>在实习期间，我参与了多个前端开发项目，主要负责交互式网页组件的设计与实现。以下是我开发的两个HTML游戏小demo，可以直接在线体验。</p>
+
+          <h4>artifacts作品</h4>
+          <div class="game-grid">
+            <a href="angrybird.html" class="game-preview" target="_blank">
+              <img src="flappybird.png" alt="游戏1预览" loading="lazy">
+              <div class="game-overlay">
+                <i class="fas fa-gamepad"></i>
+                <span>在线体验</span>
+              </div>
+              <div class="game-title">飞行小鸟</div>
+            </a>
+            <a href="wakeup.html" class="game-preview" target="_blank">
+              <img src="wakeup.png" alt="游戏2预览" loading="lazy">
+              <div class="game-overlay">
+                <i class="fas fa-gamepad"></i>
+                <span>在线体验</span>
+              </div>
+              <div class="game-title">助力起床</div>
+            </a>
+          </div>
+        `
+      },
+      4: {
+        title: "学习记录更新",
+        content: `
+          <h4>持续学习 | 2023.09 – 至今</h4>
+          <p>记录我在大学期间的学习历程，包括课程学习、竞赛参与和个人技能提升等方面。</p>
+
+          <h4>竞赛经历</h4>
+          <div class="competition-item">
+            <div class="competition-image">
+              <img src="平均动态规划.png" alt="数学建模大赛" loading="lazy">
+            </div>
+            <div class="competition-content">
+              <h5>全国大学生数学建模大赛</h5>
+              <p>作为团队中的代码手，负责数据处理、模型实现和结果可视化。使用Python实现了多种算法模型，并撰写技术报告。</p>
+              <a href="NIPT国赛25.pdf" class="btn-small" target="_blank">查看详情</a>
+            </div>
+          </div>
+
+          <h4>个人学习记录</h4>
+          <div class="learning-record">
+            <div class="record-image">
+              <img src="cl.png" alt="学习记录" loading="lazy">
+            </div>
+            <div class="record-content">
+              <p>记录我的学习心得、技术笔记和项目经验，包括编程语言学习、算法实践和工具使用等方面。</p>
+              <div class="record-links">
+                <a href="https://icn301pamm6d.feishu.cn/wiki/MwOXwSdeqiEu4hkQWSScqfXTnTD?from=from_copylink" class="btn-small" target="_blank">计算语言学</a>
+                <a href="https://icn301pamm6d.feishu.cn/wiki/SgoqwdWT8i9xsxkT3rXceY8pnih?from=from_copylink" class="btn-small" target="_blank">数学建模学习</a>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    // 显示项目详情
+    function showProjectDetail(projectId) {
+      const project = projectDetails[projectId];
+      const container = document.getElementById('project-details-container');
+
+      container.innerHTML = `
+        <div class="project-detail" data-aos="fade-up">
+          <div class="detail-header">
+            <h3>${project.title}</h3>
+            <button class="back-btn" onclick="hideProjectDetail()">
+              <i class="fas fa-arrow-left"></i> 返回项目导览
+            </button>
+          </div>
+          <div class="detail-content">
+            ${project.content}
+          </div>
+        </div>
+      `;
+
+      // 滚动到详情部分
+      container.scrollIntoView({ behavior: 'smooth' });
+
+      // 重新初始化AOS
+      AOS.refresh();
+    }
+
+    // 隐藏项目详情
+    function hideProjectDetail() {
+      const container = document.getElementById('project-details-container');
+      container.innerHTML = '';
+
+      // 滚动回项目概览
+      document.querySelector('.projects-overview').scrollIntoView({ behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>

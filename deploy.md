@@ -18,7 +18,8 @@
    git commit -m "简要说明这次更新点：比如“更新项目卡片样式”"
    ```
 
-
+ git add .
+   git commit -m "更新4个项目卡片导览”"
    > **提示**：保持 commit message 简洁、有意义，方便日后回顾。
 
 3. **推送并触发Pages部署**
